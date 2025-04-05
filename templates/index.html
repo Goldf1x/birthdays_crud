@@ -43,19 +43,22 @@
 
                 <h2>All Birthdays</h2>
                 <table>
+
                     <thead>
                         <tr>
                             <th>Name</th>
                             <th>Birthday</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        
 
+                    <tbody>
+                        <!-- Сюда генерим строчки -->
                     </tbody>
+
                 </table>
             </div>
         </div>
+        
         <script>
             const bdaysList = document.querySelector("tbody");
             const months = [
@@ -64,7 +67,7 @@
                     ];
 
 
-            document.addEventListener("DOMContentLoaded", async function () {
+            document.addEventListener("DOMContentLoaded", async function() {
                 let response = await fetch("/api/bdays"); // Запрос на апи для получения ответа с jsonом 
                 let bdays_data = await response.json(); // Конвертируем ответ в json
 
@@ -72,11 +75,46 @@
                 bdays_data.forEach(bday => {
 
                     let date = months[bday["month"] - 1] + " " + bday["day"];
-                    html += "<tr>" + "<td>" + bday["name"] + "</td>" + "<td>" + date + "</td>" + "</tr>";
+                    html += 
+                        "<tr>" + "<td>" + 
+                        bday["name"] + 
+                        "</td>" + 
+                        "<td class=\"cell\" id=\"" + bday["id"] + "\">" + 
+                        date + 
+                        "<button class=\"del\">Delete</button>" 
+                        + "</td>" + "</tr>";
  
                 });   
                 bdaysList.innerHTML = html;
+
+                const cells = document.querySelectorAll(".cell");
+            
+                    cells.forEach(function(cell){
+                    cell.addEventListener("click", function() {
+                        
+                        fetch("/api/dbday", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                id: cell.id
+                            })
+                        }).then(response => response.json()).then(data => {
+
+                                                                    if (data.status === "success") {
+                                                                        window.location.reload()
+                                                                    } else {
+                                                                        console.log(data);
+                                                                        alert("Ошибка удаления!");
+                                                                    }
+                                                                });
+                                                                
+                    });
+                });
+                
             });
+
         </script>
     </body>
 </html>

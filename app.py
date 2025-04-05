@@ -55,3 +55,26 @@ def get_bdays_data():
     db.close()
 
     return jsonify(bdays_data)
+
+
+@app.route("/api/dbday", methods=["POST"])
+def delete_bday():
+    data = request.get_json()
+    print(data)
+
+    delete_id = data.get("id")
+
+    if delete_id:
+
+        with sqlite3.connect(DB_NAME) as db:
+
+            db.execute("DELETE FROM birthdays WHERE id = ?", (int(delete_id), ))
+            db.commit()
+        return jsonify({
+            "status": "success",
+            "message": "Deleted"
+            }), 200
+    return jsonify({
+            "status": "error",
+            "message": "No id provided"
+            }), 400

@@ -8,6 +8,34 @@ body {
     text-align: left;
 }
 
+.cell {
+    position: relative;
+    padding-right: 50px;
+}
+
+.cell button {
+    background-color: #c0392b;
+    position: absolute;
+    right: 50px;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0;
+    color: #ffffff;
+    pointer-events: none;
+}
+
+.cell:hover button {
+    opacity: 1;
+    pointer-events: auto;
+    cursor: pointer;
+    background-color: #c0392b;
+    
+}
+
+.cell button:hover {
+    background-color: #e74c3c;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -57,9 +85,9 @@ button, input[type="submit"] {
     transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
     vertical-align: middle;
 }
-button[id="refresh"]:hover {
+
+form button:hover {
     cursor: pointer;
-    background-color: #98a6b2;
 }
 
 input[type="text"], input[type="number"] {
